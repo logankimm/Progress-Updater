@@ -68,7 +68,7 @@ def parse_query(result):
 
 def update_config(json_data):
     with open("config.json", "w") as jsonFile:
-        json.dump(config_data, jsonFile, indent=4, sort_keys=True)
+        json.dump(config_data, jsonFile, indent=4, sort_keys=True, ensure_ascii=False,)
 
 if __name__ == "__main__":
     # initialize global variables
