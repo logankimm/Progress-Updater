@@ -12,7 +12,7 @@ Run it before checking your progress sheet or after you play.
   - playlist_type: Choose either **beginner** or **intermediate**
   - id: The text after .../d/"**here**". For example: https://docs.google.com/spreadsheets/d/placeholder/edit#gid=0 -> placeholder
 
-#####Example JSON :
+##### Example JSON :
 ```json
 {
     "scenario_data": {
