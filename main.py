@@ -1,4 +1,3 @@
-import pathlib
 import json
 import os
 import sqlite3
@@ -31,12 +30,12 @@ def parse_config():
             case "intermediate":
                 cs_level_ids = json_data["scenario_data"]["intermediate_scenarios"]
             case _:
-                raise ValueError
+                raise
         logging.info("Config.json has been parsed incorrectly")
 
     except:
         logging.info("Error while parsing config file")
-        raise ValueError
+        raise
     return (json_data, last_played, SHEET_ID, cs_level_ids)
 
 
@@ -68,9 +67,10 @@ def parse_query(result):
 
 def update_config(json_data):
     with open("config.json", "w") as jsonFile:
-        json.dump(config_data, jsonFile, indent=4, sort_keys=True, ensure_ascii=False,)
+        json.dump(config_data, jsonFile, indent=4, ensure_ascii=False,)
 
 if __name__ == "__main__":
+    print(1)
     # initialize global variables
     SHEET_ID = ""
     CURR_ROW = ""
@@ -88,7 +88,6 @@ if __name__ == "__main__":
         logging.info("SQL Connection Successful")
     except:
         logging.info("Failure to connect SQL database - no solution for this one chief except pray")
-        raise ValueError
 
     try:
         # Get scores from the database
@@ -97,7 +96,7 @@ if __name__ == "__main__":
             
             # Query for new data to add
             cur.execute(
-                f"SELECT score, endedAt FROM TaskData WHERE taskName = ? AND endedAt > date(?) ORDER BY endedAt",
+                f"SELECT score, endedAt FROM TaskData WHERE taskName = ? AND endedAt > DATETIME(?) ORDER BY endedAt",
                 [csid, PREV_PLAYED])
             result = cur.fetchall()
 

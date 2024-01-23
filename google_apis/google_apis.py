@@ -15,16 +15,17 @@ from googleapiclient.errors import HttpError
 class Google_APIs:
     credentials = None
     TOKEN_SCOPES = None
-    def __init__(self, scopes: list, credentials_path = "client-secret.json", token_path = "tokens.json"):
+    def __init__(self, scopes: list, credentials_path = "credentials.json", token_path = "tokens.json"):
         self.TOKEN_SCOPES = scopes
-        curr_dir = os.path.dirname(os.path.abspath(__file__))
+        curr_dir = os.path.dirname(os.path.abspath(sys.argv[0]))
+        print(curr_dir)
 
         # check if credentials_path is default
-        if (credentials_path == "client-secret.json"):
-            credentials_path = os.path.join(os.path.split(curr_dir)[0], credentials_path)
+        if (credentials_path == "credentials.json"):
+            credentials_path = os.path.join(curr_dir, credentials_path)
 
         if (token_path == "tokens.json"):
-            token_path = os.path.join(os.path.split(curr_dir)[0], token_path)
+            token_path = os.path.join(curr_dir, token_path)
 
         if os.path.exists(token_path):
             # Check if token is expired - delete if it is
@@ -34,7 +35,12 @@ class Google_APIs:
             # Read expiration date value
             with open(token_path, "r") as json_file:
                 token = json.load(json_file)
-                expiration_date = datetime.strptime(token["expiry"], "%Y-%m-%dT%H:%M:%S.%fZ")
+
+                # Check format of token expiration date
+                if len(token["expiry"]) == 20:
+                    expiration_date = datetime.strptime(token["expiry"], "%Y-%m-%dT%H:%M:%SZ")
+                else:
+                    expiration_date = datetime.strptime(token["expiry"], "%Y-%m-%dT%H:%M:%S.%fZ")
 
             if current_time > expiration_date:
                 # Delete token file

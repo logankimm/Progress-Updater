@@ -16,7 +16,6 @@ class Sheets_API(Google_APIs):
             super().__init__(scopes)
         except:
             logging.info("Error while creating instance of Google API")
-            raise ValueError
 
         self.SPREADSHEET_ID = ID
 

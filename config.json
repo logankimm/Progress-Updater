@@ -1,7 +1,7 @@
 {
     "scenario_data": {
-        "last_played": "2020-01-23 12:53:19",
-        "playlist_type": "",
+        "last_played": "2024-01-23 10:03:30",
+        "playlist_type": "intermediate",
         "beginner_scenarios": {
             "CsLevel.Lowgravity56.VT x WHJ.RWFAP2": "vt x whj smooth strafe sphere easy",
             "CsLevel.Lowgravity56.VT Adjus.ROJF3J": "vt adjust track valorant easy",
@@ -24,6 +24,6 @@
         }
     },
     "sheets": {
-        "id": ""
+        "id": "1FZ8-FyIyxihPpYMlkkZ4i6muQP8VTDJyWzDnM4CWQpU"
     }
 }
