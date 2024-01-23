@@ -8,9 +8,9 @@ Run it before checking your progress sheet or after you play.
 
 1. Follow the #3 in the quickstart guide under [Voltaic's Benchmark Updater](https://github.com/VoltaicHQ/Progress-Sheet-Updater) to interact with the google api.
 2. Open up the config file. Change last_played, playlist_type, and id under sheets:
-  - last_played: Should be day 1 if the sheet is brand new. Otherwise, make it the last time you played the playlist
-  - playlist_type: Choose either **beginner** or **intermediate**
-  - id: The text after .../d/"**here**". For example: https://docs.google.com/spreadsheets/d/placeholder/edit#gid=0 -> placeholder
+    - last_played: Should be day 1 if the sheet is brand new. Otherwise, make it the last time you played the playlist
+    - playlist_type: Choose either **beginner** or **intermediate**
+    - id: The text after .../d/"**here**". For example: https://docs.google.com/spreadsheets/d/placeholder/edit#gid=0 -> placeholder
 
 ##### Example JSON :
 ```json
