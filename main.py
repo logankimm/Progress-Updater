@@ -2,11 +2,7 @@ import pathlib
 import json
 import os
 import sqlite3
-import sys
-import time
 from datetime import datetime
-import urllib.request
-import csv
 import logging
 from google_apis.sheets import Sheets_API
 
@@ -114,5 +110,5 @@ if __name__ == "__main__":
         
         # Update Sheet
         sheet.update_scenario(update_data, scenario_index, len(update_data))
-        
+
     logging.info("Log for current day successful")
