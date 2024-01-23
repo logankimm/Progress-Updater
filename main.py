@@ -7,6 +7,7 @@ import time
 from datetime import datetime
 import urllib.request
 import csv
+import logging
 from google_apis.sheets import Sheets_API
 
 # Create Google API to do stuff with
@@ -36,10 +37,11 @@ def parse_config():
             case "intermediate":
                 cs_level_ids = json_data["scenario_data"]["intermediate_scenarios"]
             case _:
-                print("Invalid playlist type")
                 raise ValueError
+        logging.info("Config.json has been parsed incorrectly")
+
     except:
-        print("Invalid json file")
+        logging.info("Error while parsing config file")
         raise ValueError
     return (json_data, last_played, SHEET_ID, cs_level_ids)
 
@@ -86,8 +88,13 @@ if __name__ == "__main__":
     sheet = initalize_apis(spread_id = SHEET_ID)
 
     # Open db connection
-    con = sqlite3.connect(AIMLAB_DB_PATH)
-    cur = con.cursor()
+    try:
+        con = sqlite3.connect(AIMLAB_DB_PATH)
+        cur = con.cursor()
+        logging.info("SQL Connection Successful")
+    except:
+        logging.info("Failure to connect SQL database - no solution for this one chief except pray")
+        raise ValueError
 
     # Get scores from the database
     for scenario_index, item in enumerate(cs_level_ids.items()):
@@ -107,3 +114,5 @@ if __name__ == "__main__":
         
         # Update Sheet
         sheet.update_scenario(update_data, scenario_index, len(update_data))
+        
+    logging.info("Log for current day successful")
