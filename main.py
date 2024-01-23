@@ -11,8 +11,6 @@ def initalize_apis(spread_id, *args):
     SCOPES = [
         "https://www.googleapis.com/auth/spreadsheets",
     ]
-
-    # When there is pre-determined credentials/token path already
     sheet = Sheets_API(scopes = SCOPES, ID = spread_id)
     return sheet
 
