@@ -44,16 +44,17 @@ class Sheets_API(Google_APIs):
         except HttpError as err:
             print(err)
 
-    def update_scenario(self, data, index):
+    def update_scenario(self, data, scenario_index, row_index):
         # Update index used based off different scenario
-        values = {"values" : [data]}
+        values = {"values" : data}
 
         self.sheet.values().update(spreadsheetId=self.SPREADSHEET_ID,
-            range = "{sheet_name}!{column_start}{row_num}:{column_end}{row_num}".format(
+            range = "{sheet_name}!{column_start}{row_start}:{column_end}{row_end}".format(
                 sheet_name = self.SHEET_NAME,
-                column_start = self.COLUMNS[index][0],
-                column_end = self.COLUMNS[index][1],
-                row_num = self.START_ROW + index),
+                column_start = self.COLUMNS[scenario_index][0],
+                column_end = self.COLUMNS[scenario_index][1],
+                row_start = self.START_ROW,
+                row_end = self.START_ROW + row_index),
             valueInputOption = "USER_ENTERED",
             body = values).execute()
         

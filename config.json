@@ -1,8 +1,27 @@
 {
     "scenario_data": {
-        "last_played": "2022-01-01 00:00:00"
+        "beginner_scenarios": {
+            "CsLevel.Lowgravity56.VT Adjus.ROJF3J": "vt adjust track valorant easy",
+            "CsLevel.Lowgravity56.VT Berry.RUPVB5": "",
+            "CsLevel.Lowgravity56.VT x WHJ.RWFAP2": "vt x whj smooth strafe sphere easy",
+            "CsLevel.Lowgravity56.VT x WHJ.RWFFD8": "",
+            "CsLevel.Lowgravity56.VT x WHJ.RWIM32": "",
+            "CsLevel.VT Empyrean.VT 1w4ts.R1WXON": ""
+        },
+        "intermediate_scenarios": {
+            "CsLevel.Lowgravity56.VT 3T Wi.RTA5MX": "vt 3t wide",
+            "CsLevel.Lowgravity56.VT Adjus.ROJETY": "vt adjust track valorant",
+            "CsLevel.Lowgravity56.VT Berry.RUPUHP": "vt berryts static small",
+            "CsLevel.Lowgravity56.VT Dynam.RQCD1Z": "vt dynamic reflex micro",
+            "CsLevel.Lowgravity56.VT x WHJ.RWEZ9J": "vt x whj smooth strafe sphere",
+            "CsLevel.Lowgravity56.VT x WHJ.RWFB5F": "vt x whj 5 sphere hipfire small",
+            "CsLevel.Lowgravity56.VT x WHJ.RWFQU4": "vt x whj speedswitch click",
+            "CsLevel.VT Empyrean.VT 1w2ts.R21FUT": "vt 1w2ts smallflicks valorant"
+        },
+        "last_played": "2024-01-23 12:53:19",
+        "playlist_type": "intermediate"
     },
     "sheets": {
-        "id": ""
+        "id": "1FZ8-FyIyxihPpYMlkkZ4i6muQP8VTDJyWzDnM4CWQpU"
     }
 }

@@ -3,6 +3,7 @@ import json
 import os
 import sys
 import pathlib
+from datetime import datetime, timedelta
 
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
@@ -14,46 +15,38 @@ from googleapiclient.errors import HttpError
 class Google_APIs:
     credentials = None
     TOKEN_SCOPES = None
-    def __init__(self, scopes: list, credentials_path = "credentials\\client-secret.json", token_path = "credentials\\tokens.json"):
+    def __init__(self, scopes: list, credentials_path = "client-secret.json", token_path = "tokens.json"):
         self.TOKEN_SCOPES = scopes
         curr_dir = os.path.dirname(os.path.abspath(__file__))
 
         # check if credentials_path is default
-        if (credentials_path == "credentials\\client-secret.json"):
+        if (credentials_path == "client-secret.json"):
             credentials_path = os.path.join(os.path.split(curr_dir)[0], credentials_path)
 
-        if (token_path ==  "credentials\\tokens.json"):
+        if (token_path == "tokens.json"):
             token_path = os.path.join(os.path.split(curr_dir)[0], token_path)
 
         if os.path.exists(token_path):
-            self.credentials = Credentials.from_authorized_user_file(token_path, self.TOKEN_SCOPES)
+            # Check if token is expired - delete if it is
+            expiration_date = None
+            current_time = datetime.now() + timedelta(minutes=5)
+
+            # Read expiration date value
+            with open(token_path, "r") as json_file:
+                token = json.load(json_file)
+                expiration_date = datetime.strptime(token["expiry"], "%Y-%m-%dT%H:%M:%S.%fZ")
+
+            if current_time > expiration_date:
+                # Delete token file
+                os.remove(token_path)
+            else:
+                self.credentials = Credentials.from_authorized_user_file(token_path, self.TOKEN_SCOPES)
 
         # if not credentials or they're not valid
         if not self.credentials or not self.credentials.valid:
-            # if there are credentials or they're invalid now
-            if self.credentials and self.credentials.expired and self.credentials.refresh_token:
-                self.credentials.refresh(Request())
-            else:
-                flow = InstalledAppFlow.from_client_secrets_file(credentials_path, self.TOKEN_SCOPES)
-                self.credentials = flow.run_local_server(port=0)
+            flow = InstalledAppFlow.from_client_secrets_file(credentials_path, self.TOKEN_SCOPES)
+            self.credentials = flow.run_local_server(port=0)
 
         # Save the credentials for the next run
         with open(token_path, "w") as token:
             token.write(self.credentials.to_json())
-
-
-SCOPES = ["https://www.googleapis.com/auth/spreadsheets", "https://www.googleapis.com/auth/youtube", "https://www.googleapis.com/auth/youtube.force-ssl"]
-# spread_id = "1peDrk9b9fnRcMSSk_GMp1F7C8UR6SCXrB0DbElPu9Lw"
-
-asdf = Google_APIs(SCOPES)
-
-# print(os.path.dirname(os.path.abspath(__file__)) + "/token.json")
-# print(os.path.join(os.path.dirname(os.path.abspath(__file__)), "token.json"))
-
-# if os.path.exists(filepath):
-#     print (filepath + ' exists')
-# else: 
-#     print (filepath + ' does not exist')
-
-# print(os.path.join(os.getcwd(), "token.json"))
-# print(os.path.exists("google_apis.py".strip()))
