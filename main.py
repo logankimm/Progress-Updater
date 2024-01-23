@@ -90,23 +90,26 @@ if __name__ == "__main__":
         logging.info("Failure to connect SQL database - no solution for this one chief except pray")
         raise ValueError
 
-    # Get scores from the database
-    for scenario_index, item in enumerate(cs_level_ids.items()):
-        csid, name = item
-        
-        # Query for new data to add
-        cur.execute(
-            f"SELECT score, endedAt FROM TaskData WHERE taskName = ? AND endedAt > date(?) ORDER BY endedAt",
-            [csid, PREV_PLAYED])
-        result = cur.fetchall()
+    try:
+        # Get scores from the database
+        for scenario_index, item in enumerate(cs_level_ids.items()):
+            csid, name = item
+            
+            # Query for new data to add
+            cur.execute(
+                f"SELECT score, endedAt FROM TaskData WHERE taskName = ? AND endedAt > date(?) ORDER BY endedAt",
+                [csid, PREV_PLAYED])
+            result = cur.fetchall()
 
-        # Update the last played within config file
-        config_data["scenario_data"]["last_played"] = result[-1][1]
-        update_config(config_data)
+            # Update the last played within config file
+            config_data["scenario_data"]["last_played"] = result[-1][1]
+            update_config(config_data)
 
-        update_data = parse_query(result)
-        
-        # Update Sheet
-        sheet.update_scenario(update_data, scenario_index, len(update_data))
+            update_data = parse_query(result)
+            
+            # Update Sheet
+            sheet.update_scenario(update_data, scenario_index, len(update_data))
+    except:
+        logging.info("Error while parsing query_data")
 
     logging.info("Log for current day successful")
