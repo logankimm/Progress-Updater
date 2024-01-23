@@ -1,0 +1,5 @@
+google_api_python_client
+google_auth_oauthlib
+google-auth-httplib2
+oauth2client
+pyinstaller
