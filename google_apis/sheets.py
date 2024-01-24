@@ -1,4 +1,5 @@
 import logging
+import sys
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 from .google_apis import Google_APIs
@@ -12,10 +13,7 @@ class Sheets_API(Google_APIs):
 
     def __init__(self, scopes, ID, *args):
         # Super method to create credentials
-        try:
-            super().__init__(scopes)
-        except:
-            logging.info("Error while creating instance of Google API")
+        super().__init__(scopes)
 
         self.SPREADSHEET_ID = ID
 

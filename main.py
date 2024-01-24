@@ -1,9 +1,14 @@
 import json
 import os
+import sys
+import logging
 import sqlite3
 from datetime import datetime
-import logging
 from google_apis.sheets import Sheets_API
+
+def close_program():
+    input("Press enter to close program")
+    sys.exit(1)
 
 # Create Google API to do stuff with
 def initalize_apis(spread_id, *args):
@@ -30,12 +35,18 @@ def parse_config():
             case "intermediate":
                 cs_level_ids = json_data["scenario_data"]["intermediate_scenarios"]
             case _:
-                raise
-        logging.info("Config.json has been parsed incorrectly")
+                raise ValueError
+
+        logging.info("Config.json has been parsed correctly")
+
+    except ValueError as err:
+        logging.warning("Scenario difficulty has been incorrectly input")
+        close_program()
 
     except:
-        logging.info("Error while parsing config file")
-        raise
+        logging.exception("Error while parsing config file")
+        close_program()
+        
     return (json_data, last_played, SHEET_ID, cs_level_ids)
 
 
@@ -70,16 +81,35 @@ def update_config(json_data):
         json.dump(config_data, jsonFile, indent=4, ensure_ascii=False,)
 
 if __name__ == "__main__":
-    print(1)
+    logging.basicConfig(
+        level = logging.WARNING,
+        format = "%(asctime)s %(levelname)s %(message)s",
+        datefmt = "%Y-%m-%d %H:%M:%S",
+        handlers = [
+            logging.FileHandler("debug.log"),
+            logging.StreamHandler("sys.stdout")
+        ],
+    )
+
     # initialize global variables
     SHEET_ID = ""
     CURR_ROW = ""
     PREV_PLAYED = ""
-    AIMLAB_DB_PATH = os.path.abspath(os.path.join(os.getenv("APPDATA"), os.pardir, "LocalLow\\statespace\\aimlab_tb\\klutch.bytes"))
+    try:
+        AIMLAB_DB_PATH = os.path.abspath(os.path.join(os.getenv("APPDATA"), os.pardir, "LocalLow\\statespace\\aimlab_tb\\klutch.bytes"))
+    except:
+        logging.error("Aimlabs file path does not exist")
+        close_program
 
     # Parse config file and update proper variables
     config_data, PREV_PLAYED, SHEET_ID, cs_level_ids = parse_config()
-    sheet = initalize_apis(spread_id = SHEET_ID)
+
+    try:
+        sheet = initalize_apis(spread_id = SHEET_ID)
+    except:
+        logging.exception("Error while creating instance of Google API")
+        input("Press enter to exit")
+        sys.exit(1)
 
     # Open db connection
     try:
@@ -87,7 +117,8 @@ if __name__ == "__main__":
         cur = con.cursor()
         logging.info("SQL Connection Successful")
     except:
-        logging.info("Failure to connect SQL database - no solution for this one chief except pray")
+        logging.exception("Failure to connect SQL database - no solution for this")
+        close_program
 
     try:
         # Get scores from the database
@@ -109,6 +140,7 @@ if __name__ == "__main__":
             # Update Sheet
             sheet.update_scenario(update_data, scenario_index, len(update_data))
     except:
-        logging.info("Error while parsing query_data")
+        logging.exception("Error while parsing query_data")
+        close_program()
 
     logging.info("Log for current day successful")
