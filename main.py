@@ -39,7 +39,7 @@ def parse_config():
 
         logging.info("Config.json has been parsed correctly")
 
-    except ValueError as err:
+    except ValueError:
         logging.warning("Scenario difficulty has been incorrectly input")
         close_program()
 
@@ -82,7 +82,7 @@ def update_config(json_data):
 
 if __name__ == "__main__":
     logging.basicConfig(
-        level = logging.WARNING,
+        level = logging.ERROR,
         format = "%(asctime)s %(levelname)s %(message)s",
         datefmt = "%Y-%m-%d %H:%M:%S",
         handlers = [
@@ -99,7 +99,7 @@ if __name__ == "__main__":
         AIMLAB_DB_PATH = os.path.abspath(os.path.join(os.getenv("APPDATA"), os.pardir, "LocalLow\\statespace\\aimlab_tb\\klutch.bytes"))
     except:
         logging.error("Aimlabs file path does not exist")
-        close_program
+        sys.exit(1)
 
     # Parse config file and update proper variables
     config_data, PREV_PLAYED, SHEET_ID, cs_level_ids = parse_config()
@@ -108,7 +108,6 @@ if __name__ == "__main__":
         sheet = initalize_apis(spread_id = SHEET_ID)
     except:
         logging.exception("Error while creating instance of Google API")
-        input("Press enter to exit")
         sys.exit(1)
 
     # Open db connection
@@ -118,29 +117,34 @@ if __name__ == "__main__":
         logging.info("SQL Connection Successful")
     except:
         logging.exception("Failure to connect SQL database - no solution for this")
-        close_program
+        sys.exit(1)
 
-    try:
-        # Get scores from the database
-        for scenario_index, item in enumerate(cs_level_ids.items()):
-            csid, name = item
-            
-            # Query for new data to add
-            cur.execute(
-                f"SELECT score, endedAt FROM TaskData WHERE taskName = ? AND endedAt > DATETIME(?) ORDER BY endedAt",
-                [csid, PREV_PLAYED])
-            result = cur.fetchall()
+    # Get scores from the database
+    for scenario_index, item in enumerate(cs_level_ids.items()):
+        csid, name = item
+        
+        # Query for new data to add
+        cur.execute(
+            f"SELECT score, endedAt FROM TaskData WHERE taskName = ? AND endedAt > DATETIME(?) ORDER BY endedAt",
+            [csid, PREV_PLAYED])
+        result = cur.fetchall()
 
-            # Update the last played within config file
-            config_data["scenario_data"]["last_played"] = result[-1][1]
-            update_config(config_data)
+        if not result:
+            logging.warning("No valid scenario data to add")
+            sys.exit(1)
 
-            update_data = parse_query(result)
-            
-            # Update Sheet
+        # Update the last played within config file
+        config_data["scenario_data"]["last_played"] = result[-1][1]
+        
+        # Update Sheet and parse teh data
+        update_data = parse_query(result)
+        try:
             sheet.update_scenario(update_data, scenario_index, len(update_data))
-    except:
-        logging.exception("Error while parsing query_data")
-        close_program()
+        except:
+            logging.error("Couldn't update current spreadsheet. Check sheet ID again")
+            sys.exit(1)
+
+    # Update config file afterwards
+    update_config(config_data)
 
     logging.info("Log for current day successful")
