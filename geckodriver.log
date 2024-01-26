@@ -1,0 +1,19 @@
+1706291569825	geckodriver	INFO	Listening on 127.0.0.1:51954
+1706291572838	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--remote-debugging-port" "51955" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\logan\\AppData\\Local\\Temp\\rust_mozprofileqpXRBm"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+1706291573071	Marionette	INFO	Marionette enabled
+Dynamically enable window occlusion 0
+1706291573130	Marionette	INFO	Listening on port 51965
+WebDriver BiDi listening on ws://127.0.0.1:51955
+Read port: 51965
+1706291573273	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+DevTools listening on ws://127.0.0.1:51955/devtools/browser/882a51f6-abd6-4ef6-8a24-f877a8b2404d
+JavaScript error: https://discord.com/assets/34546.c02bfef4ef54f65effd6.js, line 1: Error: Cannot find module './notosans-400-normalitalic.woff2'
+1706291575509	Marionette	WARN	Ignoring event 'DOMContentLoaded' because document has an invalid readyState of 'complete'.
+JavaScript error: https://discord.com/assets/34546.c02bfef4ef54f65effd6.js, line 1: Error: Cannot find module './notosans-400-normalitalic.woff2'
+1706291581330	Marionette	INFO	Stopped listening on port 51965
+JavaScript warning: https://discord.com/assets/47470.c4ab7647d25b8ac58ca8.js, line 1: Script terminated by timeout at:
+o@https://discord.com/assets/47470.c4ab7647d25b8ac58ca8.js:1:5522
+
+Dynamically enable window occlusion 1
