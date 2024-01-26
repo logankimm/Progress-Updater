@@ -7,3 +7,6 @@ aimlabs.ipynb
 build
 tutorial1
 updater/pycache
+geckodriver.log
+debug.log
+tempCodeRunnerFile.py
