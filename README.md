@@ -34,9 +34,9 @@ Voltaic has a similar guide [here](https://www.youtube.com/watch?v=awBoG9Jy8CY#t
     22. Under the `OAuth 2.0 Client IDs` section, your ID will be listed. Click the download icon on the far right of the row of your newly created ID.
     23. Name it `credentials.json` and save it in the folder with the rest of the program. Capitalization matters so make sure it's all lower case.
 3. Open up the config file. Change last_played, playlist_type, and id under sheets:
-    - last_played: Should be day 1 if the sheet is brand new. Otherwise, make it the last time you played the playlist
-    - playlist_type: Choose either **beginner** or **intermediate**
-    - id: The text after .../d/"**here**". For example: https://docs.google.com/spreadsheets/d/placeholder/edit#gid=0 -> placeholder
+    - **last_played**: Should be day 1 if the sheet is brand new. Otherwise, make it the last time you played the playlist
+    - **playlist_type**: Choose either **beginner** or **intermediate**
+    - **id**: The text after .../d/"**here**". For example: https://docs.google.com/spreadsheets/d/placeholder/edit#gid=0 -> placeholder
 
 ##### Example JSON :
 ```json
