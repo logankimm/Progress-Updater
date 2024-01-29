@@ -2,15 +2,12 @@ import json
 import os
 from datetime import datetime
 
-from paths import CONFIG_PATH
-from error_logging import parse_error
-
 class IncorrectDifficultyException(Exception): pass
 
 class Config():
     def read_config(file_path):
         if not os.path.isfile(file_path):
-            parse_error("config_path")
+            raise FileNotFoundError
 
         with open(file_path, "r") as json_file:
             json_data = json.load(json_file)

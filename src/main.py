@@ -53,6 +53,8 @@ if __name__ == "__main__":
     try:
         config_data = Config.read_config(CONFIG_PATH)
         PREV_PLAYED, SHEET_ID, cs_level_ids = Config.parse_config(config_data)
+    except FileNotFoundError:
+        parse_error("config_path")
     except IncorrectDifficultyException:
         parse_error("config_difficulty")
     except Exception as err:
